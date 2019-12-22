@@ -22,6 +22,7 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public List<CategoryDto> getAll() {
         return categoryDtoListMapper(categoryRepository.findAll());
+
     }
 
     @Override

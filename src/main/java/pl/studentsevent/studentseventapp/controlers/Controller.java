@@ -25,21 +25,26 @@ public class Controller {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/all")
-    public String hello(){
-        return "Hello world";
-    }
+//    @GetMapping("/all")
+//    public String hello(){
+//        return "Hello world";
+//    }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping("/admin/all")
-    public String securedhello(){
-        return "Secured";
-    }
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @GetMapping("/admin/all")
+//    public String securedhello(){
+//        return "Secured";
+//    }
 
-
+    // where confirmation is 1
     @GetMapping("/event/getAllEvents")
     public List<EventDto> getAllEvents(){
         return eventService.getAll();
+    }
+
+    @GetMapping("/event/getAllArchives")
+    public List<EventDto> getAllArchives(){
+        return eventService.getAllArchives();
     }
 
     @GetMapping("/category/getAllCategories")

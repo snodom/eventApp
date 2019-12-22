@@ -7,6 +7,7 @@ public class EventDto {
     private String name;
     private String organizer;
     private String date; // day
+    private String hour;
     private String adress;
     private String price;
     private String link;
@@ -74,6 +75,14 @@ public class EventDto {
 
     public void setCategoryDtos(Set<CategoryDto> categoryDtos) {
         this.categoryDtos = categoryDtos;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 }
 

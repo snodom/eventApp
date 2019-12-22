@@ -10,9 +10,14 @@ import pl.studentsevent.studentseventapp.respository.CategoryRepository;
 import pl.studentsevent.studentseventapp.respository.EventRepository;
 import pl.studentsevent.studentseventapp.service.EventService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class EventServiceImp implements EventService {
@@ -25,14 +30,54 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<EventDto> getAll() {
-        //TODO dodac sortowanie po dacie...
-        return eventDtoListMapper(this.eventRepository.findAll());
+        List<EventDto> eventDtos = eventDtoListMapper(this.eventRepository.findAllByConfirmationIs(1));
+        return eventDtos.stream()
+                .filter(eventDto -> {
+                    try {
+                        Date parsedDate = new SimpleDateFormat("dd/MM/yyyy").parse(eventDto.getDate());
+                        return parsedDate.compareTo(new Date()) < 0;
+                    } catch (ParseException e) {
+                        return false;
+                    }
+                })
+                .sorted(Comparator.comparing(a -> {
+                    try {
+                        return new SimpleDateFormat("dd/MM/yyyy").parse(a.getDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return new Date("11/22/2999");
+                })).collect(Collectors.toList());
     }
 
     @Override
     public List<Event> adminGetAll() {
 
         return eventRepository.findAll();
+    }
+
+    @Override
+    public List<EventDto> getAllArchives() {
+        List<EventDto> eventDtos = eventDtoListMapper(this.eventRepository.findAllByConfirmationIs(1));
+        return eventDtos.stream()
+                .filter(eventDto -> {
+                    try {
+                        Date parsedDate = new SimpleDateFormat("dd/MM/yyyy").parse(eventDto.getDate());
+                        return parsedDate.compareTo(new Date()) > 0;
+                    } catch (ParseException e) {
+                        return false;
+                    }
+                })
+                .sorted(Comparator.comparing(a -> {
+            try {
+                return new SimpleDateFormat("dd/MM/yyyy").parse(a.getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return new Date("11/22/2999");
+        })).collect(Collectors.toList());
+
+
     }
 
 
@@ -45,6 +90,8 @@ public class EventServiceImp implements EventService {
         confirmedEvent.setConfirmation(1);
         return eventRepository.save(confirmedEvent);
     }
+
+    //TODO zmiana potwierdzenia na 2 jezeli data jest starsza niz costam
 
     @Override
     public void deleteEvent(Long event_id) {
@@ -67,7 +114,7 @@ public class EventServiceImp implements EventService {
         event.setAdress(eventDto.getAdress());
         event.setPrice(eventDto.getPrice());
         event.setLink(eventDto.getLink());
-
+        event.setHour(eventDto.getHour());
         event.setCategories(this.categorySetMapper(eventDto.getCategoryDtos()));
 
         eventRepository.save(event);
@@ -93,6 +140,7 @@ public class EventServiceImp implements EventService {
 
 
     private EventDto eventDtoMapper(Event event){
+
         EventDto eventDto = new EventDto();
         eventDto.setEvent_id(event.getEvent_id());
         eventDto.setName(event.getName());
@@ -101,11 +149,10 @@ public class EventServiceImp implements EventService {
         eventDto.setAdress(event.getAdress());
         eventDto.setPrice(event.getPrice());
         eventDto.setLink(event.getLink());
+        eventDto.setHour(event.getHour());
         eventDto.setCategoryDtos(categoryDtoSetMapper(event.getCategories()));
         return eventDto;
     }
-
-
 
     private CategoryDto categoryDtoMapper(Category category){
         CategoryDto categoryDto = new CategoryDto();

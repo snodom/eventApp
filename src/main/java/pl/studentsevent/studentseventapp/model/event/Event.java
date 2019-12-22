@@ -27,6 +27,10 @@ public class Event {
 
     @Column
     @NotNull
+    private String hour;
+
+    @Column
+    @NotNull
     private String adress;
 
     @Column
@@ -127,6 +131,13 @@ public class Event {
         this.categories = categories;
     }
 
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
     public Event(Event event) {
         this.event_id =event.getEvent_id();
         this.name=event.getName();
@@ -137,5 +148,7 @@ public class Event {
         this.link= event.getLink();
         this.confirmation = event.getConfirmation();
         this.categories = event.getCategories();
+        this.hour=event.getHour();
     }
+
 }
