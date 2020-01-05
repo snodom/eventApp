@@ -51,7 +51,7 @@ public class FileStorageService {
         } catch (IOException ex) {
             // throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
-        return "7f1b7e60a3ed404e620e5e775e885b75.png"; //////////////////////////////////
+        return "7f1b7e60a3ed404e620e5e775e885b75.png";
     }
 
     public Resource loadFileAsResource(String fileName) {
@@ -67,7 +67,7 @@ public class FileStorageService {
         } catch (MalformedURLException ex) {
             //throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
-        return null; ////////////
+        return null;
     }
 
 }

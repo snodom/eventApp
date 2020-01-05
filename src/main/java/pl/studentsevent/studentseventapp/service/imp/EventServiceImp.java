@@ -10,6 +10,7 @@ import pl.studentsevent.studentseventapp.respository.CategoryRepository;
 import pl.studentsevent.studentseventapp.respository.EventRepository;
 import pl.studentsevent.studentseventapp.service.EventService;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
@@ -105,6 +106,7 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
+    @Transactional
     public void addEvent(EventDto eventDto) {
         Event event = new Event();
 
@@ -113,8 +115,8 @@ public class EventServiceImp implements EventService {
         event.setDate(eventDto.getDate());
         event.setAdress(eventDto.getAdress());
         event.setPrice(eventDto.getPrice());
-        event.setLink(eventDto.getLink());
         event.setHour(eventDto.getHour());
+        event.setLink(eventDto.getLink());
         event.setCategories(this.categorySetMapper(eventDto.getCategoryDtos()));
 
         eventRepository.save(event);

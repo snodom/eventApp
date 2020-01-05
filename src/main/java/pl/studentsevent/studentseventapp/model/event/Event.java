@@ -26,19 +26,19 @@ public class Event {
     private String date; // day
 
     @Column
-    @NotNull
+
     private String hour;
 
     @Column
-    @NotNull
+
     private String adress;
 
     @Column
-    @NotNull
+
     private String price;
 
     @Column
-    @NotNull
+
     private String link;
 
     @Column

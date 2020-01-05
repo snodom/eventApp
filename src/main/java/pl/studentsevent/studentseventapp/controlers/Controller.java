@@ -1,5 +1,9 @@
 package pl.studentsevent.studentseventapp.controlers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import net.minidev.json.JSONObject;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +18,9 @@ import pl.studentsevent.studentseventapp.service.EventService;
 import pl.studentsevent.studentseventapp.service.imp.FileStorageService;
 
 import javax.validation.Valid;
+import java.io.DataInput;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class Controller {
@@ -59,18 +65,23 @@ public class Controller {
     public  ResponseEntity addEvent(@Valid @RequestBody @RequestParam("request") String eventDto, @RequestParam("file") MultipartFile file){
         try{
 
+            System.out.println(eventDto);
+            Gson g = new Gson();
+            String aa = eventDto.trim();
+            EventDto a = g.fromJson(eventDto.trim(), EventDto.class);
+
+            EventDto my = new ObjectMapper().readValue(eventDto, EventDto.class);
             String fileName = fileStorageService.storeFile(file);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/downloadFile/")
                     .path(fileName)
                     .toUriString();
+            System.out.println(fileDownloadUri); //TODO tutaj trzeba bedzie podac sciezke do pliku
 
+            my.setLink(fileDownloadUri);
 
-            //return new EventDto(eventDto.getEvent_id(),eventDto.getName(),eventDto.getOrganizer(),eventDto.getDate(),eventDto.getHour(),eventDto.getAdress(),eventDto.getPrice(),eventDto.)
-          //  eventDto.setLink(fileDownloadUri);
-
-          //  eventService.addEvent(eventDto);
+            eventService.addEvent(my);
 
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
@@ -78,3 +89,4 @@ public class Controller {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
+
