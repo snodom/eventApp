@@ -79,7 +79,7 @@ public class Controller {
                     .toUriString();
             System.out.println(fileDownloadUri); //TODO tutaj trzeba bedzie podac sciezke do pliku
 
-            my.setLink(fileDownloadUri);
+            my.setPathToFile(fileDownloadUri);
 
             eventService.addEvent(my);
 

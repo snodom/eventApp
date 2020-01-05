@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class EventServiceImp implements EventService {
@@ -31,29 +30,11 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<EventDto> getAll() {
-        List<EventDto> eventDtos = eventDtoListMapper(this.eventRepository.findAllByConfirmationIs(1));
-        return eventDtos.stream()
-                .filter(eventDto -> {
-                    try {
-                        Date parsedDate = new SimpleDateFormat("dd/MM/yyyy").parse(eventDto.getDate());
-                        return parsedDate.compareTo(new Date()) < 0;
-                    } catch (ParseException e) {
-                        return false;
-                    }
-                })
-                .sorted(Comparator.comparing(a -> {
-                    try {
-                        return new SimpleDateFormat("dd/MM/yyyy").parse(a.getDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return new Date("11/22/2999");
-                })).collect(Collectors.toList());
+        return eventDtoListMapper(this.eventRepository.findAllByConfirmationIs(1));
     }
 
     @Override
     public List<Event> adminGetAll() {
-
         return eventRepository.findAll();
     }
 
@@ -77,10 +58,7 @@ public class EventServiceImp implements EventService {
             }
             return new Date("11/22/2999");
         })).collect(Collectors.toList());
-
-
     }
-
 
     // zmiana potwierdzenie na 1
     @Override
@@ -117,6 +95,7 @@ public class EventServiceImp implements EventService {
         event.setPrice(eventDto.getPrice());
         event.setHour(eventDto.getHour());
         event.setLink(eventDto.getLink());
+        event.setPathToFile(eventDto.getPathToFile());
         event.setCategories(this.categorySetMapper(eventDto.getCategoryDtos()));
 
         eventRepository.save(event);
@@ -152,6 +131,7 @@ public class EventServiceImp implements EventService {
         eventDto.setPrice(event.getPrice());
         eventDto.setLink(event.getLink());
         eventDto.setHour(event.getHour());
+        eventDto.setPathToFile(event.getPathToFile());
         eventDto.setCategoryDtos(categoryDtoSetMapper(event.getCategories()));
         return eventDto;
     }

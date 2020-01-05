@@ -38,8 +38,10 @@ public class Event {
     private String price;
 
     @Column
-
     private String link;
+
+    @Column
+    private String pathToFile;
 
     @Column
     @NotNull
@@ -57,6 +59,14 @@ public class Event {
     private Set<Category> categories;
 
     public Event() {
+    }
+
+    public String getPathToFile() {
+        return pathToFile;
+    }
+
+    public void setPathToFile(String pathToFile) {
+        this.pathToFile = pathToFile;
     }
 
     public Long getEvent_id() {
@@ -149,6 +159,6 @@ public class Event {
         this.confirmation = event.getConfirmation();
         this.categories = event.getCategories();
         this.hour=event.getHour();
+        this.pathToFile=event.getPathToFile();
     }
-
 }

@@ -18,8 +18,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/admin")
-//@PreAuthorize("hasAnyRole('ADMIN')")
 public class AdminController {
 
     @Autowired
@@ -28,17 +26,20 @@ public class AdminController {
     @Autowired
     private EventService eventService;
 
-    @GetMapping("/categoryList")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/admin/categoryList")
     public List<Category> categoryList(){
         return categoryService.adminGetAll();
     }
 
-    @GetMapping("/eventList")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/admin/eventList")
     public List<Event> eventList(){
         return eventService.adminGetAll();
     }
 
-    @PutMapping(value = "/confirmation")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping(value = "/admin/confirmation")
     public ResponseEntity confirmation(@Valid @RequestBody Long event_id){
         try{
            eventService.confirmation(event_id);
@@ -49,7 +50,8 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteEvent")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping(value = "/admin/deleteEvent")
     public ResponseEntity deleteEvent(@Valid @RequestBody Long event_id){
         try{
             eventService.deleteEvent(event_id);
@@ -60,7 +62,8 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = "/addCategory")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping(value = "/admin/addCategory")
     public ResponseEntity addCategory(@Valid @RequestBody CategoryDto categoryDto){
         try{
             categoryService.addCategory(categoryDto);
@@ -70,7 +73,8 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/deleteCategory")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping(value = "/admin/deleteCategory")
     public ResponseEntity deleteCategory(@Valid @RequestBody Long category_id){
         try{
             categoryService.deleteCategory(category_id);

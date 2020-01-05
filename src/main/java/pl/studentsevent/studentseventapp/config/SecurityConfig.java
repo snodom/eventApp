@@ -24,17 +24,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-        .passwordEncoder(new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence charSequence) {
-                return charSequence.toString();
-            }
+                .passwordEncoder(new PasswordEncoder() {
+                    @Override
+                    public String encode(CharSequence charSequence) {
+                        return charSequence.toString();
+                    }
 
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                return true;
-            }
-        });
+                    @Override
+                    public boolean matches(CharSequence charSequence, String s) {
+                        return true;
+                    }
+                });
     }
 
     @Override
@@ -44,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-               // .loginPage("/login") // mozna usunac
                 .permitAll();
     }
 }

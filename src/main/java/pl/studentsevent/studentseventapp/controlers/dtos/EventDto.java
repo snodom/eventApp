@@ -1,5 +1,6 @@
 package pl.studentsevent.studentseventapp.controlers.dtos;
 
+import javax.persistence.Column;
 import java.util.Set;
 
 public class EventDto {
@@ -11,12 +12,19 @@ public class EventDto {
     private String adress;
     private String price;
     private String link;
+    private String pathToFile;
     private Set<CategoryDto> categoryDtos;
 
     public Long getEvent_id() {
         return event_id;
     }
 
+    public String getPathToFile() {
+        return pathToFile;
+    }
+    public void setPathToFile(String pathToFile) {
+        this.pathToFile = pathToFile;
+    }
     public void setEvent_id(Long event_id) {
         this.event_id = event_id;
     }

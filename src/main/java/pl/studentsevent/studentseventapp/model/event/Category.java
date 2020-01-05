@@ -1,5 +1,7 @@
 package pl.studentsevent.studentseventapp.model.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,30 +15,25 @@ public class Category{
     @Column
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     @Column
     private Set<Event> events;
-
     public Set<Event> getEvents() {
         return events;
     }
-
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
-
     public Long getCategory_id() {
         return category_id;
     }
-
     public void setCategory_id(Long category_id) {
         this.category_id = category_id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
